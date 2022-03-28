@@ -1,7 +1,7 @@
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
-import {JwtAuthGuards} from "./auth/jwt-auth.guards";
+import {ValidationPipe} from "./pipes/validation.pipe";
 
 
 async function start() {
@@ -16,6 +16,9 @@ async function start() {
     .build()
   const documentation = SwaggerModule.createDocument(app, configSwagger)
   SwaggerModule.setup('/api/docs', app, documentation)
+
+
+  app.useGlobalPipes(new ValidationPipe())
 
   await app.listen(PORT, () => console.log(`server works on ${process.env.PORT} in ${process.env.NODE_ENV} mode`))
 }
